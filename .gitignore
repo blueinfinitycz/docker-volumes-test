@@ -1,0 +1,31 @@
+node_modules/
+**/node_modules/
+**/package-lock.json
+
+*.log
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Environment
+.env*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary
+*.bak
+*.tmp
+*.temp
+
+# Data
+**/data/
