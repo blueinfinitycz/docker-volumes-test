@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Backend kontejner - ukládá data do Docker volume
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - backend-data:/app/data  # Named volume pro persistentní data
+    container_name: backend-container
+    networks:
+      - app-network
+
+  # API kontejner - proxy mezi frontend a backend
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    container_name: api-container
+    depends_on:
+      - backend  # Počká na backend před spuštěním
+    networks:
+      - app-network
+
+  # Frontend kontejner - Nginx s webovým rozhraním
+  frontend:
+    build: ./frontend
+    ports:
+      - "4455:80"
+    container_name: frontend-container
+    depends_on:
+      - api  # Počká na API před spuštěním
+    networks:
+      - app-network
+
+# Named volume pro persistentní data
+volumes:
+  backend-data:
+    driver: local
+
+# Vlastní síť pro komunikaci mezi kontejnery
+networks:
+  app-network:
+    driver: bridge
